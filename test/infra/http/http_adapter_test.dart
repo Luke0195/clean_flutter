@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:faker/faker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -13,7 +15,7 @@ class HttpAdapter{
   const HttpAdapter({ required this.httpClient});
   
   Future<void> request({ required String url, required String method, Map? body}) async {
-    await httpClient.post(Uri.parse(url), headers: {'content-type': 'application/json', 'accept': 'application/json'}, body: body );
+    await httpClient.post(Uri.parse(url), headers: {'content-type': 'application/json', 'accept': 'application/json'}, body: jsonEncode(body) );
   }
   
 }
@@ -34,8 +36,8 @@ void main(){
   group('post', (){
     test('Should call post with correct values', ()async {
       when(mockClient.post(Uri.parse(url), headers: anyNamed('headers'), body: anyNamed('body'))).thenAnswer((_) async => Response('ok', 200));
-      await sut.request(url: url , method: 'post', body: {'foo': 'bar'});
-      verify(mockClient.post(Uri.parse(url), headers:headers , body:{'foo': 'bar'} ));
+      await sut.request(url: url , method: 'post', body: {'any_key': 'any_value'});
+      verify(mockClient.post(Uri.parse(url), headers:headers , body: jsonEncode({'any_key': 'any_value'}) ));
     });
   });
 }
