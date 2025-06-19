@@ -31,30 +31,39 @@ void main(){
   });
   
   test('Should call HttpClient with correct values', ()async{
-    await sut.authentication(authenticationParams);
+    final acessToken = faker.guid.guid();
+    when(httpClient.request(url: anyNamed('url'), method: anyNamed('method'), body: anyNamed("body"))).thenAnswer((_)async => {'accessToken': acessToken});
+    await sut.auth(authenticationParams);
     verify(httpClient.request(url: url, method: 'post', body: { 'email': authenticationParams.email, 'password': authenticationParams.secret}));
   }); 
 
   test('Should throws UnexpectedError if HttpClient throws 400', ()async {
     when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.badRequest);
-    final future = sut.authentication(authenticationParams);
+    final future = sut.auth(authenticationParams);
     expect(future, throwsA(DomainError.unexpected));
   });
 
   test('Should throws InvalidCredencials if HttpClient throws 401', ()async {
     when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.unauthorized);
-    final future = sut.authentication(authenticationParams);
+    final future = sut.auth(authenticationParams);
     expect(future, throwsA(DomainError.invalidCredencials));
   });
   test('Should throws UnexpectedError if HttpClient throws 404', ()async {
     when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.notFound);
-    final future = sut.authentication(authenticationParams);
+    final future = sut.auth(authenticationParams);
     expect(future, throwsA(DomainError.unexpected));
   });
 
   test('Should throws UnexpectedError if HttpClient throws 500', ()async {
     when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.serverError);
-    final future = sut.authentication(authenticationParams);
+    final future = sut.auth(authenticationParams);
     expect(future, throwsA(DomainError.unexpected));
+  });
+
+  test('Should returns an AccountEntity if HttpClient returns 200', ()async {
+    final acessToken = faker.guid.guid();
+    when(httpClient.request(url: anyNamed('url'), method: anyNamed('method'), body: anyNamed("body"))).thenAnswer((_)async => {'accessToken': acessToken});
+    final result = await sut.auth(authenticationParams);
+    expect(result.token, equals(acessToken));
   });
 }

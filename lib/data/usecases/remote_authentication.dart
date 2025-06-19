@@ -1,4 +1,5 @@
 import 'package:flutter_tdd/data/http/http_error.dart';
+import 'package:flutter_tdd/domain/entities/entities.dart';
 import 'package:flutter_tdd/domain/helpers/domain_error.dart';
 
 import '../../domain/usecases/authentication.dart';
@@ -11,11 +12,11 @@ class RemoteAuthentication{
 
   RemoteAuthentication({ required this.url, required this.httpClient});
 
-  Future<void> authentication(AuthenticationParams authenticationParams) async{
+  Future<AccountEntity> auth(AuthenticationParams authenticationParams) async{
     final body = RemoteAuthenticationParams.fromDomain(authenticationParams);
     try{
-      await httpClient.request(url: url, method: 'post', body: body.toJson());
-
+      final httpResponse = await httpClient.request(url: url, method: 'post', body: body.toJson());
+      return AccountEntity.fromJson(httpResponse);
     }on HttpError catch(error){
     throw error == HttpError.unauthorized ? DomainError.invalidCredencials : DomainError.unexpected;
     }
@@ -33,5 +34,6 @@ class RemoteAuthenticationParams{
     return RemoteAuthenticationParams(email: authenticationParams.email, password: authenticationParams.secret);
   }
 
+  
   Map toJson() => {'email': email, 'password': password};
 }
