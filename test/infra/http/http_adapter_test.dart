@@ -12,24 +12,30 @@ class HttpAdapter{
 
   const HttpAdapter({ required this.httpClient});
   
-  Future<void> request({ required String url, required String method, Map? json}) async {
-    await httpClient.post(Uri.parse(url), headers: {'Content-Type': 'application/json', 'Accept': 'application/json'});
+  Future<void> request({ required String url, required String method, Map? body}) async {
+    await httpClient.post(Uri.parse(url), headers: {'content-type': 'application/json', 'accept': 'application/json'}, body: body );
   }
   
 }
 
 @GenerateMocks([Client])
 void main(){
-  
+    late String url;
+    late Map<String, String> headers;
+    late MockClient mockClient;
+    late HttpAdapter sut;
+    setUp((){
+        url = faker.internet.httpUrl();
+        headers = {'content-type': 'application/json', 'accept': 'application/json'};
+        mockClient = MockClient();
+        sut = HttpAdapter(httpClient: mockClient);
+    });
+    
   group('post', (){
     test('Should call post with correct values', ()async {
-      final url = faker.internet.httpUrl();
-      final headers = {'Content-Type': 'application/json', 'Accept': 'application/json'};
-      final client = MockClient();
-      when(client.post(Uri.parse(url), headers: anyNamed('headers'))).thenAnswer((_) async => Response('ok', 200));
-      final sut = HttpAdapter(httpClient: client);
-      await sut.request(url: url , method: 'post');
-      verify(client.post(Uri.parse(url), headers: headers));
+      when(mockClient.post(Uri.parse(url), headers: anyNamed('headers'), body: anyNamed('body'))).thenAnswer((_) async => Response('ok', 200));
+      await sut.request(url: url , method: 'post', body: {'foo': 'bar'});
+      verify(mockClient.post(Uri.parse(url), headers:headers , body:{'foo': 'bar'} ));
     });
   });
 }
