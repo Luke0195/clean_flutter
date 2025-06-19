@@ -35,8 +35,13 @@ void main(){
     verify(httpClient.request(url: url, method: 'post', body: { 'email': authenticationParams.email, 'password': authenticationParams.secret}));
   }); 
 
-  test('Should throws UnexpectedError if HttpClient throws', ()async {
+  test('Should throws UnexpectedError if HttpClient throws 400', ()async {
     when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.badRequest);
+    final future = sut.authentication(authenticationParams);
+    expect(future, throwsA(DomainError.unexpected));
+  });
+  test('Should throws UnexpectedError if HttpClient throws 404', ()async {
+    when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.notFound);
     final future = sut.authentication(authenticationParams);
     expect(future, throwsA(DomainError.unexpected));
   });
