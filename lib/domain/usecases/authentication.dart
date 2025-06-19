@@ -10,5 +10,5 @@ class AuthenticationParams {
 
   AuthenticationParams({ required this.email, required this.secret });
 
-  toJson() => { 'email': email, 'password': secret};
+  toJson() => { 'email': email, 'password': secret };
 }
