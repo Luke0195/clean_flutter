@@ -67,7 +67,10 @@ void main(){
     expect(result.token, equals(accessToken));
   });
 
-  test('Should returns 200 with invalid data', () async{
-    when(httpClient.request(url: anyNamed('url'), method: anyNamed("method"), body: anyNamed("body"))).thenAnswer((_)async => {'invalid_token': 'invalid_token'});
+  test('Should returns UnexpectedError if HttpClient returns 200 with invalid data', () async{
+    when(httpClient.request(url: anyNamed('url'), method: anyNamed("method"), body: anyNamed("body")))
+    .thenAnswer((_)async => {'invalid_token': 'invalid_token'});
+    final future = sut.auth(authenticationParams);
+    expect(future, throwsA(DomainError.unexpected));
   });
 }
