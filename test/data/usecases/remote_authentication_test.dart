@@ -21,8 +21,10 @@ void main(){
   late RemoteAuthentication sut;
   late AuthenticationParams authenticationParams;
   late String url;
+  late String accessToken;
 
   setUp((){
+    accessToken = faker.guid.guid();
     authenticationParams = AuthenticationParams(email: faker.internet.email(), 
     secret: faker.internet.password());
     url = faker.internet.httpUrl();
@@ -31,8 +33,7 @@ void main(){
   });
   
   test('Should call HttpClient with correct values', ()async{
-    final acessToken = faker.guid.guid();
-    when(httpClient.request(url: anyNamed('url'), method: anyNamed('method'), body: anyNamed("body"))).thenAnswer((_)async => {'accessToken': acessToken});
+    when(httpClient.request(url: anyNamed('url'), method: anyNamed('method'), body: anyNamed("body"))).thenAnswer((_)async => {'accessToken': accessToken});
     await sut.auth(authenticationParams);
     verify(httpClient.request(url: url, method: 'post', body: { 'email': authenticationParams.email, 'password': authenticationParams.secret}));
   }); 
@@ -61,9 +62,12 @@ void main(){
   });
 
   test('Should returns an AccountEntity if HttpClient returns 200', ()async {
-    final acessToken = faker.guid.guid();
-    when(httpClient.request(url: anyNamed('url'), method: anyNamed('method'), body: anyNamed("body"))).thenAnswer((_)async => {'accessToken': acessToken});
+    when(httpClient.request(url: anyNamed('url'), method: anyNamed('method'), body: anyNamed("body"))).thenAnswer((_)async => {'accessToken': accessToken});
     final result = await sut.auth(authenticationParams);
-    expect(result.token, equals(acessToken));
+    expect(result.token, equals(accessToken));
+  });
+
+  test('Should returns 200 with invalid data', () async{
+    when(httpClient.request(url: anyNamed('url'), method: anyNamed("method"), body: anyNamed("body"))).thenAnswer((_)async => {'invalid_token': 'invalid_token'});
   });
 }
