@@ -19,22 +19,23 @@ import 'package:flutter_tdd/data/usecases/remote_authentication.dart';
 void main(){
   late MockHttpClient httpClient;
   late RemoteAuthentication sut;
+  late AuthenticationParams authenticationParams;
   late String url;
 
   setUp((){
+    authenticationParams = AuthenticationParams(email: faker.internet.email(), 
+    secret: faker.internet.password());
     url = faker.internet.httpUrl();
     httpClient = MockHttpClient();
     sut = RemoteAuthentication(url: url, httpClient: httpClient);
   });
   
   test('Should call HttpClient with correct values', ()async{
-    final authenticationParams = AuthenticationParams(email: faker.internet.email(), secret: faker.internet.password());
     await sut.authentication(authenticationParams);
     verify(httpClient.request(url: url, method: 'post', body: { 'email': authenticationParams.email, 'password': authenticationParams.secret}));
   }); 
 
   test('Should throws UnexpectedError if HttpClient throws', ()async {
-    final authenticationParams = AuthenticationParams(email: faker.internet.email(), secret: faker.internet.password());
     when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.badRequest);
     final future = sut.authentication(authenticationParams);
     expect(future, throwsA(DomainError.unexpected));
