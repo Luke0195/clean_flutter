@@ -40,6 +40,12 @@ void main(){
     final future = sut.authentication(authenticationParams);
     expect(future, throwsA(DomainError.unexpected));
   });
+
+  test('Should throws InvalidCredencials if HttpClient throws 401', ()async {
+    when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.unauthorized);
+    final future = sut.authentication(authenticationParams);
+    expect(future, throwsA(DomainError.invalidCredencials));
+  });
   test('Should throws UnexpectedError if HttpClient throws 404', ()async {
     when(httpClient.request(url: anyNamed("url"), method: anyNamed('method'), body: anyNamed('body'))).thenThrow(HttpError.notFound);
     final future = sut.authentication(authenticationParams);
