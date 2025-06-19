@@ -1,0 +1,12 @@
+- Caracteristicas da Arquitetura.
+
+1 - Disponibilidade
+2 - Continuidade/Desempenho.
+3 - Recuperabilidade
+4 - Confiabilidade/Segurança.
+5 - Robustez 
+6 - Escalibidade.
+
+- Caracteristicas Transversais da Arquitetura.
+
+1 - Acessibilidade.

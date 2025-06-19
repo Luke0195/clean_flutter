@@ -31,7 +31,7 @@ class MockHttpClient extends _i1.Mock implements _i2.HttpClient {
   }
 
   @override
-  _i3.Future<void> request({
+  _i3.Future<dynamic> request({
     required String? url,
     required String? method,
     Map<dynamic, dynamic>? body,
@@ -42,8 +42,7 @@ class MockHttpClient extends _i1.Mock implements _i2.HttpClient {
               #method: method,
               #body: body,
             }),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            returnValue: _i3.Future<dynamic>.value(),
           )
-          as _i3.Future<void>);
+          as _i3.Future<dynamic>);
 }
