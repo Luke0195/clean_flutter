@@ -1,29 +1,15 @@
 
 import 'dart:convert';
 
-
 import 'package:faker/faker.dart';
+import 'package:flutter_tdd/infra/http/http_adapter.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart';
 
-import 'package:flutter_tdd/data/http/http_client.dart';
 import 'http_adapter_test.mocks.dart';
 
-class HttpAdapter implements HttpClient {
-  final Client httpClient;
-
-  const HttpAdapter({ required this.httpClient});
-  
-  @override
-  Future<Map?> request({ required String url, required String method, Map? body}) async {
-    final jsonBody = body != null ? jsonEncode(body) : null;
-    final response =  await httpClient.post(Uri.parse(url), headers: {'content-type': 'application/json', 'accept': 'application/json'}, body: jsonBody);
-    return response.body.isEmpty ? null : jsonDecode(response.body);
-  }
-  
-}
 
 @GenerateMocks([Client])
 void main(){
@@ -72,6 +58,12 @@ void main(){
 
     test('Should returns null if post returns 204', () async {
       mockResponse(204,body: '');
+      final response = await sut.request(url: url, method: 'post');
+      expect(response, isNull);
+    });
+
+    test('Should returns null if post returns 204 with data', () async {
+      mockResponse(204);
       final response = await sut.request(url: url, method: 'post');
       expect(response, isNull);
     });
