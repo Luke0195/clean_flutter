@@ -1,6 +1,6 @@
 
 import 'dart:convert';
-import 'dart:io';
+
 
 import 'package:faker/faker.dart';
 import 'package:mockito/annotations.dart';
@@ -8,17 +8,19 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart';
 
+import 'package:flutter_tdd/data/http/http_client.dart';
 import 'http_adapter_test.mocks.dart';
 
-class HttpAdapter{
+class HttpAdapter implements HttpClient {
   final Client httpClient;
 
   const HttpAdapter({ required this.httpClient});
   
+  @override
   Future<Map> request({ required String url, required String method, Map? body}) async {
     final jsonBody = body != null ? jsonEncode(body) : null;
     final response =  await httpClient.post(Uri.parse(url), headers: {'content-type': 'application/json', 'accept': 'application/json'}, body: jsonBody);
-    return jsonDecode(response.body);
+    return response.body.isEmpty ? {} : jsonDecode(response.body);
   }
   
 }
@@ -51,9 +53,17 @@ void main(){
     });
 
     test('Should returns data if post returns 200',  ()async {
-      when(mockClient.post(any, headers: anyNamed('headers'))).thenAnswer((_) async => Response(jsonEncode({'any_key': 'any_value'}), 200));
+      when(mockClient.post(any, headers: anyNamed('headers')))
+      .thenAnswer((_) async => Response(jsonEncode({'any_key': 'any_value'}), 200));
       final response = await sut.request(url: url, method: 'post');
       expect(response, {'any_key': 'any_value'});
+    });
+
+    test('Should return empty map if post returns 200 with no data', ()async {
+      when(mockClient.post(any, headers: anyNamed('headers'))).thenAnswer((_) async => Response('', 200));
+      final response = await sut.request(url: url, method: 'post');
+      expect(response, isEmpty);
+      expect(response, isA<Map>());
     });
     
   });
