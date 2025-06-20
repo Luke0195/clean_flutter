@@ -26,6 +26,13 @@ void main(){
         sut = HttpAdapter(httpClient: mockClient);
     });
     
+  group('shared', (){
+    test('Should throws ServerError if invalid method is provided', ()async{
+      final future = sut.request(url: url, method: 'invalid_method', body: {'any_key': 'any_value'});
+      expect(future, throwsA(HttpError.serverError));
+
+    });
+  });
   group('post', (){
     PostExpectation mockRequest()=> when(mockClient.post(any, headers: anyNamed('headers'), body: anyNamed('body')));
 
@@ -79,6 +86,30 @@ void main(){
       mockResponse(400, body: '');
       final future =  sut.request(url:  url, method: 'post');
       expect(future, throwsA(HttpError.badRequest));
+    });
+
+    test('Should returns BadRequestError if post returns 400', () async {
+      mockResponse(400, body: '');
+      final future =  sut.request(url:  url, method: 'post');
+      expect(future, throwsA(HttpError.badRequest));
+    });
+
+    test('Should returns BadRequestError if post returns 401', () async {
+      mockResponse(401, body: '');
+      final future =  sut.request(url:  url, method: 'post');
+      expect(future, throwsA(HttpError.unauthorized));
+    });
+
+      test('Should returns BadRequestError if post returns 403', () async {
+      mockResponse(403, body: '');
+      final future =  sut.request(url:  url, method: 'post');
+      expect(future, throwsA(HttpError.forbidden));
+    });
+
+    test('Should returns BadRequestError if post returns 404', () async {
+      mockResponse(403, body: '');
+      final future =  sut.request(url:  url, method: 'post');
+      expect(future, throwsA(HttpError.forbidden));
     });
 
     test('Should returns ServerError if post returns 500', () async {
