@@ -17,6 +17,7 @@ class RemoteAuthentication{
     final body = RemoteAuthenticationParams.fromDomain(authenticationParams);
     try{
       final httpResponse = await httpClient.request(url: url, method: 'post', body: body.toJson());
+      if(httpResponse == null) throw DomainError.unexpected;
       return RemoteAccountModel.fromJson(httpResponse).toEntity();
     }on HttpError catch(error){
     throw error == HttpError.unauthorized ? DomainError.invalidCredencials : DomainError.unexpected;
