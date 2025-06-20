@@ -31,6 +31,7 @@ void main(){
     late Map<String, String> headers;
     late MockClient mockClient;
     late HttpAdapter sut;
+
     setUp((){
         url = faker.internet.httpUrl();
         headers = {'content-type': 'application/json', 'accept': 'application/json'};
@@ -39,9 +40,9 @@ void main(){
     });
     
   group('post', (){
-      PostExpectation mockRequest()=> when(mockClient.post(any, headers: anyNamed('headers'), body: anyNamed('body')));
+      PostExpectation mockResponse()=> when(mockClient.post(any, headers: anyNamed('headers'), body: anyNamed('body')));
     setUp((){
-      mockRequest().thenAnswer((_) async => Response(jsonEncode({'any_key': 'any_value'}), 200));
+      mockResponse().thenAnswer((_) async => Response(jsonEncode({'any_key': 'any_value'}), 200));
     });
     test('Should call post with correct values', ()async {
       await sut.request(url: url , method: 'post', body: {'any_key': 'any_value'});
@@ -60,7 +61,7 @@ void main(){
     });
 
     test('Should return empty map if post returns 200 with no data', ()async {
-      mockRequest().thenAnswer((_) async => Response('', 200));
+      mockResponse().thenAnswer((_) async => Response('', 200));
       final response = await sut.request(url: url, method: 'post');
       expect(response, isEmpty);
       expect(response, isA<Map>());
