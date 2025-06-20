@@ -74,5 +74,11 @@ void main(){
       final future =  sut.request(url:  url, method: 'post');
       expect(future, throwsA(HttpError.badRequest));
     });
+
+      test('Should returns BadRequestError if post returns 400 if no body', () async {
+      mockResponse(400, body: '');
+      final future =  sut.request(url:  url, method: 'post');
+      expect(future, throwsA(HttpError.badRequest));
+    });
   });
 }
