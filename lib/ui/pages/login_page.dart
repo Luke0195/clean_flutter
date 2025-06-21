@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
+import 'package:getwidget/components/text_field/gf_text_field.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -31,6 +32,7 @@ class LoginPage extends StatelessWidget {
                           width: double.infinity,
                           height: 42,
                           child: TextFormField(
+                            key: const Key('emailInput'),
                             style: TextStyle(fontSize: 13),
                             obscureText: true,
                             decoration: InputDecoration(
@@ -53,6 +55,7 @@ class LoginPage extends StatelessWidget {
                           width: double.infinity,
                           height: 42,
                           child: TextFormField(
+                            key: const Key('passwordInput'),
                             style: TextStyle(fontSize: 13),
                             obscureText: true,
                             decoration: InputDecoration(
@@ -76,6 +79,7 @@ class LoginPage extends StatelessWidget {
                           width: double.infinity,
                           height: 42,
                           child: TextButton(
+                            key: const Key('button_key'),
                             style: ButtonStyle(
                               backgroundColor: WidgetStateProperty.all(
                                 Colors.blue.shade900, // igual ao TextFormField
@@ -96,11 +100,26 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: null,
                             child: Text(
                               'Entrar'.toUpperCase(),
                               style: TextStyle(color: Colors.white),
                             ),
+                          ),
+                        ),
+                        GFTextField(
+                          decoration: InputDecoration(
+                            labelText: 'Email',
+                            icon: Icon(Icons.email),
+                            filled: true,
+                            fillColor: Colors.grey.shade100,
+
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 1,
+                              ),
+                            ), // outline, underline, borderless
                           ),
                         ),
                         SizedBox(height: 12),

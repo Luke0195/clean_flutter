@@ -28,7 +28,7 @@ class LoginHeader extends StatelessWidget {
         ],
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
       ),
-      child: Image.asset('assets/logo.png', width: 150, height: 60),
+      child: Image.asset('assets/logo.png', width: 100, height: 40),
     );
   }
 }
