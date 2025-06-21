@@ -4,9 +4,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main(){
   group('Login page', (){
+
+  Future<void> loadPage(WidgetTester tester)async{
+    final loginPage = LoginPage();
+    await tester.pumpWidget(MaterialApp(home: loginPage));
+  }
       testWidgets('Should load correct initial state', (WidgetTester tester) async {
-        final loginPage = LoginPage();
-        await tester.pumpWidget(MaterialApp(home: loginPage));
+        await  loadPage(tester);
         final inputEmail = find.byKey(const Key('emailInput'));
         final inputPassword = find.byKey(const Key('passwordInput'));
         final buttonFinder = find.byKey(const Key('button_key'));
@@ -16,6 +20,14 @@ void main(){
         expect(buttonFinder, findsOneWidget);
         expect(button.onPressed, isNull);
       });
+
+      testWidgets('Should call validate with correct value', (WidgetTester tester) async { 
+        await loadPage(tester);
+        final inputEmail = find.byKey(const Key('emailInput'));
+        await tester.enterText(inputEmail, 'any_test');
+        expect(find.text('O campo e-mail é obrigátorio'), findsOneWidget);
+      });
+
 
   });
 
