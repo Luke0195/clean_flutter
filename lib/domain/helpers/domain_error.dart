@@ -1,4 +1,1 @@
-enum DomainError{
-  unexpected,
-  invalidCredencials;
-}
+enum DomainError { unexpected, invalidCredencials }

@@ -7,35 +7,44 @@ import '../../domain/usecases/authentication.dart';
 
 import '../http/http_client.dart';
 
-class RemoteAuthentication{
+class RemoteAuthentication {
   final String url;
   final HttpClient httpClient;
 
-  RemoteAuthentication({ required this.url, required this.httpClient});
+  RemoteAuthentication({required this.url, required this.httpClient});
 
-  Future<AccountEntity> auth(AuthenticationParams authenticationParams) async{
+  Future<AccountEntity> auth(AuthenticationParams authenticationParams) async {
     final body = RemoteAuthenticationParams.fromDomain(authenticationParams);
-    try{
-      final httpResponse = await httpClient.request(url: url, method: 'post', body: body.toJson());
-      if(httpResponse == null) throw DomainError.unexpected;
+    try {
+      final httpResponse = await httpClient.request(
+        url: url,
+        method: 'post',
+        body: body.toJson(),
+      );
+      if (httpResponse == null) throw DomainError.unexpected;
       return RemoteAccountModel.fromJson(httpResponse).toEntity();
-    }on HttpError catch(error){
-    throw error == HttpError.unauthorized ? DomainError.invalidCredencials : DomainError.unexpected;
+    } on HttpError catch (error) {
+      throw error == HttpError.unauthorized
+          ? DomainError.invalidCredencials
+          : DomainError.unexpected;
     }
   }
-} 
+}
 
-
-class RemoteAuthenticationParams{
+class RemoteAuthenticationParams {
   final String email;
   final String password;
 
-  RemoteAuthenticationParams({ required this.email, required this.password });
+  RemoteAuthenticationParams({required this.email, required this.password});
 
-  factory RemoteAuthenticationParams.fromDomain(AuthenticationParams authenticationParams){
-    return RemoteAuthenticationParams(email: authenticationParams.email, password: authenticationParams.secret);
+  factory RemoteAuthenticationParams.fromDomain(
+    AuthenticationParams authenticationParams,
+  ) {
+    return RemoteAuthenticationParams(
+      email: authenticationParams.email,
+      password: authenticationParams.secret,
+    );
   }
 
-  
   Map toJson() => {'email': email, 'password': password};
 }
