@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
+import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
 import 'package:getwidget/components/text_field/gf_text_field.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  final LoginPresenter presenter;
+  const LoginPage(this.presenter, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class LoginPage extends StatelessWidget {
                           width: double.infinity,
                           height: 42,
                           child: TextFormField(
+                            onChanged: presenter.validateEmail,
                             key: const Key('emailInput'),
                             style: TextStyle(fontSize: 13),
                             obscureText: true,
