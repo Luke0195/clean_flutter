@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tdd/ui/components/heading_line.dart';
+import 'package:flutter_tdd/ui/components/login_header.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -7,170 +9,120 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 150,
-                  height: 60,
-                  child: Image.asset('assets/logo.png'),
-                ),
-                Form(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        height: 42,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0.2,
-                                color: Colors.grey.shade400,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            LoginHeader(),
+            SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  HeadinLine1(text: 'Login'),
+                  Form(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: 42,
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 13),
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: 'Informe o seu e-mail',
+                              hintStyle: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey,
                               ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
+                              labelText: 'Senha',
+                              labelStyle: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                                fontSize: 14,
                               ),
+                              prefixIcon: Icon(Icons.email),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0.2,
-                                color: Colors.grey.shade400,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
-                              ),
-                            ),
-                            hintText: 'Informe o seu e-mail',
-                            hintStyle: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey,
-                            ),
-
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0.2,
-                                color: Colors.grey.shade400,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
-                              ),
-                            ),
-                            labelText: 'Email',
-                            labelStyle: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
-                            ),
-                            prefixIcon: Icon(Icons.mail),
                           ),
-                          keyboardType: TextInputType.text,
                         ),
-                      ),
-                      SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 42,
-                        child: TextFormField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0.2,
-                                color: Colors.grey.shade400,
+                        SizedBox(height: 12),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 42,
+                          child: TextFormField(
+                            style: TextStyle(fontSize: 13),
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: 'Informe o seu e-mail',
+                              hintStyle: TextStyle(
+                                fontSize: 13,
+                                color: Colors.grey,
                               ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
+                              labelText: 'Senha',
+                              labelStyle: TextStyle(
+                                color: Theme.of(context).primaryColorDark,
+                                fontSize: 14,
                               ),
+                              prefixIcon: Icon(Icons.lock),
+                              suffixIcon: Icon(Icons.remove_red_eye),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0.2,
-                                color: Colors.grey.shade400,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
-                              ),
-                            ),
-                            hintText: 'Informe o seu e-mail',
-                            hintStyle: TextStyle(
-                              fontSize: 13,
-                              color: Colors.grey,
-                            ),
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                width: 0.2,
-                                color: Colors.grey.shade400,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12.0),
-                              ),
-                            ),
-                            labelText: 'Senha',
-                            labelStyle: TextStyle(
-                              color: Colors.grey.shade400,
-                              fontSize: 14,
-                            ),
-                            prefixIcon: Icon(Icons.lock),
-                            suffixIcon: Icon(Icons.remove_red_eye),
                           ),
-                          keyboardType: TextInputType.emailAddress,
                         ),
-                      ),
-                      SizedBox(height: 16),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 42,
-                        child: TextButton(
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(
-                              Colors.blue.shade900, // igual ao TextFormField
-                            ),
-                            side: WidgetStateProperty.all(
-                              BorderSide(
-                                width: 0.2,
-                                color: Colors.grey.shade400,
+                        SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 42,
+                          child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                Colors.blue.shade900, // igual ao TextFormField
                               ),
-                            ),
-                            shape:
-                                WidgetStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(12.0),
-                                    ),
+                              side: WidgetStateProperty.all(
+                                BorderSide(
+                                  width: 0.2,
+                                  color: Theme.of(context).primaryColorDark,
+                                ),
+                              ),
+                              shape: WidgetStateProperty.all<
+                                RoundedRectangleBorder
+                              >(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(12.0),
                                   ),
                                 ),
-                          ),
-                          onPressed: () {},
-                          child: Text(
-                            'Entrar'.toUpperCase(),
-                            style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: Text(
+                              'Entrar'.toUpperCase(),
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-
-                      TextButton(
-                        onPressed: null,
-                        child: Row(
-                          children: [
-                            Icon(Icons.person),
-                            SizedBox(width: 8),
-                            Text('Entrar'),
-                          ],
+                        SizedBox(height: 12),
+                        TextButton(
+                          onPressed: null,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.person),
+                              SizedBox(width: 8),
+                              Text('Criar Conta'),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
