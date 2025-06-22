@@ -1,8 +1,31 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
 
 
 import 'package:flutter_tdd/ui/pages/pages.dart';
+
+class LoginPresenterViewModel implements LoginPresenter{
+  final _emailErrorController = StreamController<String?>();
+  final _passwordErrorController = StreamController<String?>();
+  @override
+  void validateEmail(String email) {
+    // TODO: implement validateEmail
+  }
+
+  @override
+  void validatePassword(String password) {
+    // TODO: implement validatePassword
+  }
+  
+  @override
+  Stream<String?> get emailErrorStream => _emailErrorController.stream;
+  
+  @override
+  Stream<String?> get passwordErrorStream => _passwordErrorController.stream;
+}
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -71,7 +94,7 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
 
-      home: LoginPage(),
+      home: LoginPage(LoginPresenterViewModel()),
     );
   }
 }

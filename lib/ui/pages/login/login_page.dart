@@ -33,48 +33,61 @@ class LoginPage extends StatelessWidget {
                         SizedBox(
                           width: double.infinity,
                           height: 42,
-                          child: TextFormField(
-                            onChanged: presenter.validateEmail,
-                            key: const Key('emailInput'),
-                            style: TextStyle(fontSize: 13),
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Informe o seu e-mail',
-                              hintStyle: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey,
-                              ),
-                              labelText: 'Senha',
-                              labelStyle: TextStyle(
-                                color: Theme.of(context).primaryColorDark,
-                                fontSize: 14,
-                              ),
-                              prefixIcon: Icon(Icons.email),
-                            ),
+                          child: StreamBuilder<String?>(
+                            stream: presenter.emailErrorStream,
+                            builder: (context, snapshot) {
+                              return TextFormField(
+                                onChanged: presenter.validateEmail,
+                                key: const Key('emailInput'),
+                                style: TextStyle(fontSize: 13),
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  errorText: snapshot.data,
+                                  hintText: 'Informe o seu e-mail',
+                                  hintStyle: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey,
+                                  ),
+                                  labelText: 'Senha',
+                                  labelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 14,
+                                  ),
+                                  prefixIcon: Icon(Icons.email),
+                                ),
+                              );
+                            }
                           ),
                         ),
                         SizedBox(height: 12),
                         SizedBox(
                           width: double.infinity,
                           height: 42,
-                          child: TextFormField(
-                            key: const Key('passwordInput'),
-                            style: TextStyle(fontSize: 13),
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              hintText: 'Informe o seu e-mail',
-                              hintStyle: TextStyle(
-                                fontSize: 13,
-                                color: Colors.grey,
-                              ),
-                              labelText: 'Senha',
-                              labelStyle: TextStyle(
-                                color: Theme.of(context).primaryColorDark,
-                                fontSize: 14,
-                              ),
-                              prefixIcon: Icon(Icons.lock),
-                              suffixIcon: Icon(Icons.remove_red_eye),
-                            ),
+                          child: StreamBuilder<String?>(
+                            stream: presenter.passwordErrorStream,
+                            builder: (context, snapshot) {
+                              return TextFormField(
+                                onChanged: presenter.validatePassword,
+                                key: const Key('passwordInput'),
+                                style: TextStyle(fontSize: 13),
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  errorText: snapshot.data,
+                                  hintText: 'Informe o seu e-mail',
+                                  hintStyle: TextStyle(
+                                    fontSize: 13,
+                                    color: Colors.grey,
+                                  ),
+                                  labelText: 'Senha',
+                                  labelStyle: TextStyle(
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 14,
+                                  ),
+                                  prefixIcon: Icon(Icons.lock),
+                                  suffixIcon: Icon(Icons.remove_red_eye),
+                                ),
+                              );
+                            }
                           ),
                         ),
                         SizedBox(height: 16),
