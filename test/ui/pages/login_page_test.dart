@@ -115,5 +115,15 @@ void main() {
       final TextButton button = tester.widget(buttonFinder);
       expect(button.onPressed, isNull);
     });
+
+    testWidgets('Should call authentication on form submit', (WidgetTester tester) async {
+      await loadPage(tester);
+      isFormValidController.add(true);
+      await tester.pump();
+      final buttonFinder = getKey('button_key');
+      await tester.tap(buttonFinder);
+      await tester.pump();
+      verify(mockLoginPresenter.auth()).called(1);
+    });
   });
 }

@@ -23,17 +23,17 @@
 
 #### Regras Validação.
 
-1. Os campos devem começar sem exibir mensagem de erro.
-2. O botão de fazer login deve começar desabilitado.
-3. Após digitar algo em um campo, a mensagem de erro deve sumir se o campo for válido.
-4. Validar email quando uusário digitar o campo.
-5. Mostrar mensagem de erro se o email for inválido.
-6. Remover mensagem de erro se o email for inválido.
-7. Validar senha quando o usuário digitar no campo.
-8. Mostrar mensagem de erro se a senha for inválida.
-9. Remover mensagem de erro sa senha for válida.
-10. Habilitar o botão de fazer login se todos os campos forem válidos.
-11. Desabilitar o botão de login se algum campo for inválido.
+1.[X] Os campos devem começar sem exibir mensagem de erro.
+2.[X] O botão de fazer login deve começar desabilitado.
+3.[X] Após digitar algo em um campo, a mensagem de erro deve sumir se o campo for válido.
+4.[X] Validar email quando uusário digitar o campo.
+5.[X] Mostrar mensagem de erro se o email for inválido.
+6.[X] Remover mensagem de erro se o email for inválido.
+7.[X] Validar senha quando o usuário digitar no campo.
+8.[X] Mostrar mensagem de erro se a senha for inválida.
+9.[X] Remover mensagem de erro sa senha for válida.
+10.[X] Habilitar o botão de fazer login se todos os campos forem válidos.
+11. [X]Desabilitar o botão de login se algum campo for inválido.
 12. Exibir loading no inicio da ação de login.
 13. Autenticar usuário com email e senha informados no formulário.
 14. Exibir mensagem de erro caso o login falhe.

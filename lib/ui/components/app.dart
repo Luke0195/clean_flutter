@@ -30,6 +30,9 @@ class LoginPresenterViewModel implements LoginPresenter{
   @override
   // TODO: implement isFormValidStream
   Stream<bool> get isFormValidStream => _isValidFormController.stream;
+  
+  @override
+  void auth() {}
 }
 
 class App extends StatelessWidget {

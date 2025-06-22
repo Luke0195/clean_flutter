@@ -132,7 +132,7 @@ class LoginPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  onPressed: snapshot.data  == true  ? () => print('example') : null ,
+                                  onPressed: snapshot.data  == true  ? () => presenter.auth() : null ,
                                   child: Text(
                                     'Entrar'.toUpperCase(),
                                     style: TextStyle(color: Colors.white),
