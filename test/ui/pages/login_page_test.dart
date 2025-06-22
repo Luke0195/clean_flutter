@@ -15,18 +15,23 @@ void main() {
   late MockLoginPresenter mockLoginPresenter;
   late StreamController<String?> emailErrorController;
   late StreamController<String?> passwordErrorController;
+  late StreamController<bool> isFormValidController;
 
   setUp(() {
     mockLoginPresenter = MockLoginPresenter();
     emailErrorController = StreamController<String?>();
     passwordErrorController = StreamController<String?>();
+    isFormValidController = StreamController<bool>();
 
     when(mockLoginPresenter.emailErrorStream).thenAnswer((_) => emailErrorController.stream);
     when(mockLoginPresenter.passwordErrorStream).thenAnswer((_) => passwordErrorController.stream);
+      when(mockLoginPresenter.isFormValidStream).thenAnswer((_) => isFormValidController.stream);
   });
 
   tearDown(() {
     emailErrorController.close();
+    passwordErrorController.close();
+    isFormValidController.close();
   });
 
   group('Login page', () {
@@ -93,6 +98,22 @@ void main() {
       expect(find.text('any_error'), findsOneWidget);
     });
 
+    testWidgets("Should enabled button if form is valid", (WidgetTester tester) async{
+      await loadPage(tester);
+      isFormValidController.add(true);
+      await tester.pump();
+      final buttonFinder = getKey('button_key');
+      final TextButton button = tester.widget(buttonFinder);
+      expect(button.onPressed, isNotNull);
+    });
     
+    testWidgets("Should disabled button if form is invalid", (WidgetTester tester) async{
+      await loadPage(tester);
+      isFormValidController.add(false);
+      await tester.pump();
+      final buttonFinder = getKey('button_key');
+      final TextButton button = tester.widget(buttonFinder);
+      expect(button.onPressed, isNull);
+    });
   });
 }

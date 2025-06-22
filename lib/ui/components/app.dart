@@ -10,6 +10,7 @@ import 'package:flutter_tdd/ui/pages/pages.dart';
 class LoginPresenterViewModel implements LoginPresenter{
   final _emailErrorController = StreamController<String?>();
   final _passwordErrorController = StreamController<String?>();
+  final _isValidFormController = StreamController<bool>();
   @override
   void validateEmail(String email) {
     // TODO: implement validateEmail
@@ -25,6 +26,10 @@ class LoginPresenterViewModel implements LoginPresenter{
   
   @override
   Stream<String?> get passwordErrorStream => _passwordErrorController.stream;
+  
+  @override
+  // TODO: implement isFormValidStream
+  Stream<bool> get isFormValidStream => _isValidFormController.stream;
 }
 
 class App extends StatelessWidget {
