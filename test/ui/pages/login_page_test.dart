@@ -17,6 +17,7 @@ void main() {
   late StreamController<String?> passwordErrorController;
   late StreamController<bool> isFormValidController;
   late StreamController<bool> isLoadingController;
+  late StreamController<String?> mainErrorController;
 
   setUp(() {
     mockLoginPresenter = MockLoginPresenter();
@@ -24,21 +25,26 @@ void main() {
     passwordErrorController = StreamController<String?>();
     isFormValidController = StreamController<bool>();
     isLoadingController = StreamController<bool>();
+    mainErrorController = StreamController<String?>();
     when(mockLoginPresenter.emailErrorStream).thenAnswer((_) => emailErrorController.stream);
     when(mockLoginPresenter.passwordErrorStream).thenAnswer((_) => passwordErrorController.stream);
     when(mockLoginPresenter.isFormValidStream).thenAnswer((_) => isFormValidController.stream);
     when(mockLoginPresenter.isLoadingStream).thenAnswer((_) => isLoadingController.stream);
+    when(mockLoginPresenter.mainErrorStream).thenAnswer((_) => mainErrorController.stream);
+    
   });
 
   tearDown(() {
     emailErrorController.close();
     passwordErrorController.close();
     isFormValidController.close();
+    isLoadingController.close();
+    mainErrorController.close();
   });
 
   group('Login page', () {
     Future<void> loadPage(WidgetTester tester) async {
-      var loginPage = LoginPage(mockLoginPresenter);
+      var loginPage = LoginPage(loginPresenter: mockLoginPresenter);
       await tester.pumpWidget(MaterialApp(home: loginPage));
     }
 
@@ -56,6 +62,7 @@ void main() {
       expect(inputPassword, findsOneWidget, reason: 'verify is input password exists');
       expect(buttonFinder, findsOneWidget);
       expect(button.onPressed, isNull);
+      expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
     testWidgets('Should call validate with correct value', (WidgetTester tester) async {
@@ -142,6 +149,21 @@ void main() {
       isLoadingController.add(false);
       await tester.pump();
       expect(find.byType(CircularProgressIndicator), findsNothing);
+    });
+
+    testWidgets('Should present error message if authentication fails', (WidgetTester tester) async {
+        await loadPage(tester);
+        mainErrorController.add('main error');
+        await tester.pump();
+        expect(find.text('main error'), findsOneWidget);
+    });
+
+    testWidgets('Should close streams of dispose', (WidgetTester tester) async{
+      await loadPage(tester);
+      addTearDown((){
+        verify(mockLoginPresenter.dispose()).called(1);
+      });
+    
     });
   });
   

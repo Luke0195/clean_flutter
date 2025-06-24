@@ -2,17 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
 import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
-class LoginPage extends StatelessWidget {
-  final LoginPresenter presenter;
-  const LoginPage(this.presenter, {super.key});
 
+class LoginPage extends StatefulWidget{
+  final LoginPresenter loginPresenter;
+
+  const LoginPage({super.key, required this.loginPresenter});
+  @override
+  State<StatefulWidget> createState()  => _LoginPageState();
+
+}
+class _LoginPageState extends State<LoginPage> {
+  
+  @override
+  void dispose(){
+    super.dispose();
+    widget.loginPresenter.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Builder(
         builder: (context) {
-          presenter.isLoadingStream.listen((isLoading){
+          widget.loginPresenter.isLoadingStream.listen((isLoading){
             if(isLoading) {
               showDialog(context: context, barrierDismissible: false, builder: (BuildContext context) { 
                 return SimpleDialog(children: [
@@ -27,6 +40,12 @@ class LoginPage extends StatelessWidget {
                 if(Navigator.canPop(context)){
                   Navigator.of(context).pop();
                 }
+            }
+          });
+
+          widget.loginPresenter.mainErrorStream.listen((error){
+            if(error != null){
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red.shade900, content: Text(error, textAlign: TextAlign.center,),));
             }
           });
 
@@ -65,10 +84,10 @@ class LoginPage extends StatelessWidget {
                                 width: double.infinity,
                                 height: 49,
                                 child: StreamBuilder<String?>(
-                                  stream: presenter.emailErrorStream,
+                                  stream: widget.loginPresenter.emailErrorStream,
                                   builder: (context, snapshot) {
                                     return TextFormField(
-                                      onChanged: presenter.validateEmail,
+                                      onChanged: widget.loginPresenter.validateEmail,
                                       key: const Key('emailInput'),
                                       style: TextStyle(fontSize: 13),
                                       obscureText: true,
@@ -95,10 +114,10 @@ class LoginPage extends StatelessWidget {
                                 width: double.infinity,
                                 height: 49,
                                 child: StreamBuilder<String?>(
-                                  stream: presenter.passwordErrorStream,
+                                  stream: widget.loginPresenter.passwordErrorStream,
                                   builder: (context, snapshot) {
                                     return TextFormField(
-                                      onChanged: presenter.validatePassword,
+                                      onChanged: widget.loginPresenter.validatePassword,
                                       key: const Key('passwordInput'),
                                       style: TextStyle(fontSize: 13),
                                       obscureText: true,
@@ -126,7 +145,7 @@ class LoginPage extends StatelessWidget {
                                 width: double.infinity,
                                 height: 42,
                                 child: StreamBuilder<Object>(
-                                  stream: presenter.isFormValidStream,
+                                  stream: widget.loginPresenter.isFormValidStream,
                                   builder: (context, snapshot) {
                                     return TextButton(
                                       key: const Key('button_key'),
@@ -150,7 +169,7 @@ class LoginPage extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      onPressed: snapshot.data  == true  ? () => presenter.auth() : null ,
+                                      onPressed: snapshot.data  == true  ? () => widget.loginPresenter.auth() : null ,
                                       child: Text(
                                         'Entrar'.toUpperCase(),
                                         style: TextStyle(color: Colors.white),

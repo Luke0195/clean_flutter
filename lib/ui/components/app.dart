@@ -12,6 +12,7 @@ class LoginPresenterViewModel implements LoginPresenter{
   final _passwordErrorController = StreamController<String?>();
   final _isValidFormController = StreamController<bool>();
   final _isLoadingController = StreamController<bool>();
+  final _mainErrorController = StreamController<String?>();
   @override
   void validateEmail(String email) {
   }
@@ -34,6 +35,18 @@ class LoginPresenterViewModel implements LoginPresenter{
   
   @override
   Stream<bool> get isLoadingStream => _isLoadingController.stream;
+  
+  @override
+  Stream<String?> get mainErrorStream => _mainErrorController.stream;
+  
+  @override
+  void dispose() {
+    _emailErrorController.close();
+    _passwordErrorController.close();
+    _isValidFormController.close();
+    _isLoadingController.close();
+    _mainErrorController.close();
+  }
 }
 
 class App extends StatelessWidget {
@@ -103,7 +116,7 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
 
-      home: LoginPage(LoginPresenterViewModel()),
+      home: LoginPage(loginPresenter: LoginPresenterViewModel(),),
     );
   }
 }
