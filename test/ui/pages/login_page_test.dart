@@ -16,16 +16,18 @@ void main() {
   late StreamController<String?> emailErrorController;
   late StreamController<String?> passwordErrorController;
   late StreamController<bool> isFormValidController;
+  late StreamController<bool> isLoadingController;
 
   setUp(() {
     mockLoginPresenter = MockLoginPresenter();
     emailErrorController = StreamController<String?>();
     passwordErrorController = StreamController<String?>();
     isFormValidController = StreamController<bool>();
-
+    isLoadingController = StreamController<bool>();
     when(mockLoginPresenter.emailErrorStream).thenAnswer((_) => emailErrorController.stream);
     when(mockLoginPresenter.passwordErrorStream).thenAnswer((_) => passwordErrorController.stream);
-      when(mockLoginPresenter.isFormValidStream).thenAnswer((_) => isFormValidController.stream);
+    when(mockLoginPresenter.isFormValidStream).thenAnswer((_) => isFormValidController.stream);
+    when(mockLoginPresenter.isLoadingStream).thenAnswer((_) => isLoadingController.stream);
   });
 
   tearDown(() {
@@ -124,6 +126,13 @@ void main() {
       await tester.tap(buttonFinder);
       await tester.pump();
       verify(mockLoginPresenter.auth()).called(1);
+    });
+
+    testWidgets("Should present loading", (WidgetTester tester ) async{
+      await loadPage(tester);
+      isLoadingController.add(true);
+      await tester.pump();
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
   });
 }

@@ -11,14 +11,13 @@ class LoginPresenterViewModel implements LoginPresenter{
   final _emailErrorController = StreamController<String?>();
   final _passwordErrorController = StreamController<String?>();
   final _isValidFormController = StreamController<bool>();
+  final _isLoadingController = StreamController<bool>();
   @override
   void validateEmail(String email) {
-    // TODO: implement validateEmail
   }
 
   @override
   void validatePassword(String password) {
-    // TODO: implement validatePassword
   }
   
   @override
@@ -28,11 +27,13 @@ class LoginPresenterViewModel implements LoginPresenter{
   Stream<String?> get passwordErrorStream => _passwordErrorController.stream;
   
   @override
-  // TODO: implement isFormValidStream
   Stream<bool> get isFormValidStream => _isValidFormController.stream;
   
   @override
   void auth() {}
+  
+  @override
+  Stream<bool> get isLoadingStream => _isLoadingController.stream;
 }
 
 class App extends StatelessWidget {
