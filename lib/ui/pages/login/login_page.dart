@@ -3,49 +3,62 @@ import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
 import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
 
-class LoginPage extends StatefulWidget{
+class LoginPage extends StatefulWidget {
   final LoginPresenter loginPresenter;
 
   const LoginPage({super.key, required this.loginPresenter});
   @override
-  State<StatefulWidget> createState()  => _LoginPageState();
-
+  State<StatefulWidget> createState() => _LoginPageState();
 }
+
 class _LoginPageState extends State<LoginPage> {
-  
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     widget.loginPresenter.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Builder(
         builder: (context) {
-          widget.loginPresenter.isLoadingStream.listen((isLoading){
-            if(isLoading) {
-              showDialog(context: context, barrierDismissible: false, builder: (BuildContext context) { 
-                return SimpleDialog(children: [
-                  Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 10,),
-                    Text('Aguarde...',textAlign: TextAlign.center,)
-                  ],)
-                ],);
-              });
-            }else{
-                if(Navigator.canPop(context)){
-                  Navigator.of(context).pop();
-                }
+          widget.loginPresenter.isLoadingStream.listen((isLoading) {
+            if (isLoading) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (BuildContext context) {
+                  return SimpleDialog(
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 10),
+                          Text('Aguarde...', textAlign: TextAlign.center),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else {
+              if (Navigator.canPop(context)) {
+                Navigator.of(context).pop();
+              }
             }
           });
 
-          widget.loginPresenter.mainErrorStream.listen((error){
-            if(error != null){
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(backgroundColor: Colors.red.shade900, content: Text(error, textAlign: TextAlign.center,),));
+          widget.loginPresenter.mainErrorStream.listen((error) {
+            if (error != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.red.shade900,
+                  content: Text(error, textAlign: TextAlign.center),
+                ),
+              );
             }
           });
 
@@ -61,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                    
                       Card(
                         color: Colors.white,
                         elevation: 5,
@@ -70,139 +82,179 @@ class _LoginPageState extends State<LoginPage> {
                         child: Padding(
                           padding: const EdgeInsets.all(32.0),
                           child: Form(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              HeadinLine1(text: 'Faça seu Login'),
-                              SizedBox(height:  8),
-                              Text('Partice das enquetes mais nerds comunidade dev!', style:TextStyle(fontSize: 13), textAlign: TextAlign.center, ),
-                              SizedBox(height: 12),
-                              Text('🚀 Faça login e vote agora!', style: TextStyle(fontSize: 13),),
-                              SizedBox(height: 12),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 49,
-                                child: StreamBuilder<String?>(
-                                  stream: widget.loginPresenter.emailErrorStream,
-                                  builder: (context, snapshot) {
-                                    return TextFormField(
-                                      onChanged: widget.loginPresenter.validateEmail,
-                                      key: const Key('emailInput'),
-                                      style: TextStyle(fontSize: 13),
-                                      obscureText: true,
-                                      decoration: InputDecoration(
-                                        errorText: snapshot.data,
-                                        hintText: 'Informe o seu e-mail',
-                                        hintStyle: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey,
-                                        ),
-                                        labelText: 'Senha',
-                                        labelStyle: TextStyle(
-                                          color: Theme.of(context).primaryColorDark,
-                                          fontSize: 14,
-                                        ),
-                                        prefixIcon: Icon(Icons.email),
-                                      ),
-                                    );
-                                  }
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                HeadinLine1(text: 'Faça seu Login'),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Partice das enquetes mais nerds comunidade dev!',
+                                  style: TextStyle(fontSize: 13),
+                                  textAlign: TextAlign.center,
                                 ),
-                              ),
-                              SizedBox(height: 12),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 49,
-                                child: StreamBuilder<String?>(
-                                  stream: widget.loginPresenter.passwordErrorStream,
-                                  builder: (context, snapshot) {
-                                    return TextFormField(
-                                      onChanged: widget.loginPresenter.validatePassword,
-                                      key: const Key('passwordInput'),
-                                      style: TextStyle(fontSize: 13),
-                                      obscureText: true,
-                                      decoration: InputDecoration(
-                                        errorText: snapshot.data,
-                                        hintText: 'Informe o seu e-mail',
-                                        hintStyle: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey,
-                                        ),
-                                        labelText: 'Senha',
-                                        labelStyle: TextStyle(
-                                          color: Theme.of(context).primaryColorDark,
-                                          fontSize: 14,
-                                        ),
-                                        prefixIcon: Icon(Icons.lock),
-                                        suffixIcon: Icon(Icons.remove_red_eye),
-                                      ),
-                                    );
-                                  }
+                                SizedBox(height: 12),
+                                Text(
+                                  '🚀 Faça login e vote agora!',
+                                  style: TextStyle(fontSize: 13),
                                 ),
-                              ),
-                              SizedBox(height: 16),
-                              SizedBox(
-                                width: double.infinity,
-                                height: 42,
-                                child: StreamBuilder<Object>(
-                                  stream: widget.loginPresenter.isFormValidStream,
-                                  builder: (context, snapshot) {
-                                    return TextButton(
-                                      key: const Key('button_key'),
-                                      style: ButtonStyle(
-                                        backgroundColor: WidgetStateProperty.all(
-                                          Theme.of(context).primaryColor, // igual ao TextFormField
+                                SizedBox(height: 12),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 49,
+                                  child: StreamBuilder<String?>(
+                                    stream:
+                                        widget.loginPresenter.emailErrorStream,
+                                    builder: (context, snapshot) {
+                                      return TextFormField(
+                                        onChanged:
+                                            widget.loginPresenter.validateEmail,
+                                        key: const Key('emailInput'),
+                                        style: TextStyle(fontSize: 13),
+
+                                        decoration: InputDecoration(
+                                          errorText: snapshot.data,
+                                          hintText: 'Informe o seu e-mail',
+                                          hintStyle: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Email',
+                                          labelStyle: TextStyle(
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).primaryColorDark,
+                                            fontSize: 14,
+                                          ),
+                                          prefixIcon: Icon(Icons.email),
                                         ),
-                                        side: WidgetStateProperty.all(
-                                          BorderSide(
-                                            width: 0.2,
-                                            color: Theme.of(context).primaryColorDark,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: 12),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 49,
+                                  child: StreamBuilder<String?>(
+                                    stream:
+                                        widget
+                                            .loginPresenter
+                                            .passwordErrorStream,
+                                    builder: (context, snapshot) {
+                                      return TextFormField(
+                                        onChanged:
+                                            widget
+                                                .loginPresenter
+                                                .validatePassword,
+                                        key: const Key('passwordInput'),
+                                        style: TextStyle(fontSize: 13),
+                                        obscureText: true,
+                                        decoration: InputDecoration(
+                                          errorText: snapshot.data,
+                                          hintText: 'Informe o seu e-mail',
+                                          hintStyle: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.grey,
+                                          ),
+                                          labelText: 'Senha',
+                                          labelStyle: TextStyle(
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).primaryColorDark,
+                                            fontSize: 14,
+                                          ),
+                                          prefixIcon: Icon(Icons.lock),
+                                          suffixIcon: Icon(
+                                            Icons.remove_red_eye,
                                           ),
                                         ),
-                                        shape: WidgetStateProperty.all<
-                                          RoundedRectangleBorder
-                                        >(
-                                          RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(12.0),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                SizedBox(height: 16),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 42,
+                                  child: StreamBuilder<Object>(
+                                    stream:
+                                        widget.loginPresenter.isFormValidStream,
+                                    builder: (context, snapshot) {
+                                      return TextButton(
+                                        key: const Key('button_key'),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              snapshot.data == true
+                                                  ? WidgetStateProperty.all(
+                                                    Theme.of(
+                                                      context,
+                                                    ).primaryColor, // igual ao TextFormField
+                                                  )
+                                                  : WidgetStateProperty.all(
+                                                    Colors.grey.shade600,
+                                                  ),
+                                          side: WidgetStateProperty.all(
+                                            BorderSide(
+                                              width: 0.2,
+                                              color:
+                                                  Theme.of(
+                                                    context,
+                                                  ).primaryColorDark,
+                                            ),
+                                          ),
+                                          shape: WidgetStateProperty.all<
+                                            RoundedRectangleBorder
+                                          >(
+                                            RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(12.0),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      onPressed: snapshot.data  == true  ? () => widget.loginPresenter.auth() : null ,
-                                      child: Text(
-                                        'Entrar'.toUpperCase(),
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    );
-                                  }
+                                        onPressed:
+                                            snapshot.data == true
+                                                ? () =>
+                                                    widget.loginPresenter.auth()
+                                                : null,
+                                        child: Text(
+                                          'Entrar'.toUpperCase(),
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                            
-                              SizedBox(height: 12),
-                              TextButton(
-                                onPressed: null,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.person),
-                                    SizedBox(width: 8),
-                                    Text('Criar Conta'),
-                                  ],
+
+                                SizedBox(height: 12),
+                                TextButton(
+                                  onPressed: null,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.person),
+                                      SizedBox(width: 8),
+                                      Text('Criar Conta'),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                                            ),
-                        ),)
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ],
             ),
           );
-        }
+        },
       ),
     );
   }

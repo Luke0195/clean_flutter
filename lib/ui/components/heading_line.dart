@@ -7,6 +7,13 @@ class HeadinLine1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 18, fontWeight: FontWeight.bold));
+    return Text(
+      text,
+      style: TextStyle(
+        color: Theme.of(context).primaryColor,
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 }

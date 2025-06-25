@@ -8,7 +8,7 @@ class LoginHeader extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 32),
       width: 150,
-      height: 240,
+      height: 190,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -28,7 +28,27 @@ class LoginHeader extends StatelessWidget {
         ],
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(80)),
       ),
-      child: Image.asset('assets/logo.png', width: 100, height: 40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            '4Dev',
+            style: TextStyle(
+              fontSize: 52,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  offset: Offset(7.0, 1.0), // deslocamento da sombra
+                  blurRadius: 3.0, // desfoque da sombra
+                  color: Colors.grey, // cor da sombra
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

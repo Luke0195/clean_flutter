@@ -4,41 +4,38 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
 
-
 import 'package:flutter_tdd/ui/pages/pages.dart';
 
-class LoginPresenterViewModel implements LoginPresenter{
+class LoginPresenterViewModel implements LoginPresenter {
   final _emailErrorController = StreamController<String?>();
   final _passwordErrorController = StreamController<String?>();
   final _isValidFormController = StreamController<bool>();
   final _isLoadingController = StreamController<bool>();
   final _mainErrorController = StreamController<String?>();
   @override
-  void validateEmail(String email) {
-  }
+  void validateEmail(String email) {}
 
   @override
-  void validatePassword(String password) {
-  }
-  
+  void validatePassword(String password) {}
+
   @override
   Stream<String?> get emailErrorStream => _emailErrorController.stream;
-  
+
   @override
   Stream<String?> get passwordErrorStream => _passwordErrorController.stream;
-  
+
   @override
   Stream<bool> get isFormValidStream => _isValidFormController.stream;
-  
+
   @override
-  void auth() {}
-  
+  Future<void> auth() async{}
+
   @override
   Stream<bool> get isLoadingStream => _isLoadingController.stream;
-  
+
   @override
   Stream<String?> get mainErrorStream => _mainErrorController.stream;
-  
+
   @override
   void dispose() {
     _emailErrorController.close();
@@ -61,6 +58,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: '4dev',
       theme: ThemeData(
+        fontFamily: 'Poppins',
         primaryColor: primaryColor,
         primaryColorDark: primaryColorDark,
         primaryColorLight: primaryColorLight,
@@ -116,7 +114,7 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
 
-      home: LoginPage(loginPresenter: LoginPresenterViewModel(),),
+      home: LoginPage(loginPresenter: LoginPresenterViewModel()),
     );
   }
 }
