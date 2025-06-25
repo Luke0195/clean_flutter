@@ -4,6 +4,7 @@ import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
 import 'package:flutter_tdd/ui/components/spinner_dialog.dart';
 import 'package:flutter_tdd/ui/pages/login/components/password_input.dart';
+import 'package:flutter_tdd/ui/pages/login/components/submit_button.dart';
 import 'package:provider/provider.dart';
 import './components/email_input.dart';
 import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
@@ -104,59 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                                   SizedBox(
                                     width: double.infinity,
                                     height: 42,
-                                    child: StreamBuilder<Object>(
-                                      stream:
-                                          widget
-                                              .loginPresenter
-                                              .isFormValidStream,
-                                      builder: (context, snapshot) {
-                                        return TextButton(
-                                          key: const Key('button_key'),
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                snapshot.data == true
-                                                    ? WidgetStateProperty.all(
-                                                      Theme.of(
-                                                        context,
-                                                      ).primaryColor, // igual ao TextFormField
-                                                    )
-                                                    : WidgetStateProperty.all(
-                                                      Colors.grey.shade600,
-                                                    ),
-                                            side: WidgetStateProperty.all(
-                                              BorderSide(
-                                                width: 0.2,
-                                                color:
-                                                    Theme.of(
-                                                      context,
-                                                    ).primaryColorDark,
-                                              ),
-                                            ),
-                                            shape: WidgetStateProperty.all<
-                                              RoundedRectangleBorder
-                                            >(
-                                              RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(12.0),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          onPressed:
-                                              snapshot.data == true
-                                                  ? () =>
-                                                      widget.loginPresenter
-                                                          .auth()
-                                                  : null,
-                                          child: Text(
-                                            'Entrar'.toUpperCase(),
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
+                                    child: SubmitButton(),
                                   ),
 
                                   SizedBox(height: 12),
@@ -191,3 +140,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
