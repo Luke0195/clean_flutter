@@ -19,8 +19,8 @@ void showLoading(BuildContext context) => showDialog(
   },
 );
 
-void hideLoading(BuildContext context){
+void hideLoading(BuildContext context) {
   if (Navigator.canPop(context)) {
-          Navigator.of(context).pop();
-        }
+    Navigator.of(context).pop();
+  }
 }

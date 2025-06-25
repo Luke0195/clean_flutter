@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tdd/ui/components/error_snackbar.dart';
 import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
 import 'package:flutter_tdd/ui/components/spinner_dialog.dart';
@@ -25,16 +26,11 @@ class _LoginPageState extends State<LoginPage> {
       }
     });
 
-    widget.loginPresenter.mainErrorStream.listen((error) {
+    widget.loginPresenter.mainErrorStream.listen((String? errorMessage) {
       if (!mounted) return;
 
-      if (error != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red.shade900,
-            content: Text(error, textAlign: TextAlign.center),
-          ),
-        );
+      if (errorMessage != null) {
+        showErrorMessage(context, errorMessage);
       }
     });
   }
@@ -44,8 +40,6 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
     widget.loginPresenter.dispose();
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
