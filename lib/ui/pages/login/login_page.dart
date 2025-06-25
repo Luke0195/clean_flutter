@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tdd/ui/components/error_snackbar.dart';
-import 'package:flutter_tdd/ui/components/heading_line.dart';
-import 'package:flutter_tdd/ui/components/login_header.dart';
-import 'package:flutter_tdd/ui/components/spinner_dialog.dart';
-import 'package:flutter_tdd/ui/pages/login/components/password_input.dart';
-import 'package:flutter_tdd/ui/pages/login/components/submit_button.dart';
 import 'package:provider/provider.dart';
-import './components/email_input.dart';
+
 import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
+import './components/components.dart';
+import '../../components/components.dart';
 
 class LoginPage extends StatefulWidget {
   final LoginPresenter loginPresenter;
@@ -77,19 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  HeadinLine1(text: 'Faça seu Login'),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    'Partice das enquetes mais nerds comunidade dev!',
-                                    style: TextStyle(fontSize: 13),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 12),
-                                  Text(
-                                    '🚀 Faça login e vote agora!',
-                                    style: TextStyle(fontSize: 13),
-                                  ),
-                                  SizedBox(height: 12),
+                                  Welcome(),
                                   SizedBox(
                                     width: double.infinity,
                                     height: 49,
