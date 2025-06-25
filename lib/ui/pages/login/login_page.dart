@@ -12,6 +12,53 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  
+  @override
+  void initState(){
+    super.initState();
+    widget.loginPresenter.isLoadingStream.listen((isLoading) {
+    if (!mounted) return;
+
+    if (isLoading) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 10),
+                  Text('Aguarde...', textAlign: TextAlign.center),
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      if (Navigator.canPop(context)) {
+        Navigator.of(context).pop();
+      }
+    }
+  });
+
+  widget.loginPresenter.mainErrorStream.listen((error) {
+    if (!mounted) return;
+
+    if (error != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red.shade900,
+          content: Text(error, textAlign: TextAlign.center),
+        ),
+      );
+    }
+  });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -24,44 +71,6 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.white,
       body: Builder(
         builder: (context) {
-          widget.loginPresenter.isLoadingStream.listen((isLoading) {
-            if (isLoading) {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (BuildContext context) {
-                  return SimpleDialog(
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(),
-                          SizedBox(height: 10),
-                          Text('Aguarde...', textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              );
-            } else {
-              if (Navigator.canPop(context)) {
-                Navigator.of(context).pop();
-              }
-            }
-          });
-
-          widget.loginPresenter.mainErrorStream.listen((error) {
-            if (error != null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.red.shade900,
-                  content: Text(error, textAlign: TextAlign.center),
-                ),
-              );
-            }
-          });
-
           return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
