@@ -14,6 +14,7 @@ dependencies:
   faker: ^2.2.0
   http: ^1.4.0
   getwidget: ^6.0.0
+  provider: 
 
 dev_dependencies:
   flutter_test:

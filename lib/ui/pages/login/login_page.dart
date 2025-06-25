@@ -3,6 +3,8 @@ import 'package:flutter_tdd/ui/components/error_snackbar.dart';
 import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
 import 'package:flutter_tdd/ui/components/spinner_dialog.dart';
+import 'package:provider/provider.dart';
+import './components/email_input.dart';
 import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -66,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                         shadowColor: Colors.grey.shade700,
                         child: Padding(
                           padding: const EdgeInsets.all(32.0),
-                          child: Form(
+                          child:  Provider(create: (_) => widget.loginPresenter, child: Form(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,36 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                                 SizedBox(
                                   width: double.infinity,
                                   height: 49,
-                                  child: StreamBuilder<String?>(
-                                    stream:
-                                        widget.loginPresenter.emailErrorStream,
-                                    builder: (context, snapshot) {
-                                      return TextFormField(
-                                        onChanged:
-                                            widget.loginPresenter.validateEmail,
-                                        key: const Key('emailInput'),
-                                        style: TextStyle(fontSize: 13),
-
-                                        decoration: InputDecoration(
-                                          errorText: snapshot.data,
-                                          hintText: 'Informe o seu e-mail',
-                                          hintStyle: TextStyle(
-                                            fontSize: 13,
-                                            color: Colors.grey,
-                                          ),
-                                          labelText: 'Email',
-                                          labelStyle: TextStyle(
-                                            color:
-                                                Theme.of(
-                                                  context,
-                                                ).primaryColorDark,
-                                            fontSize: 14,
-                                          ),
-                                          prefixIcon: Icon(Icons.email),
-                                        ),
-                                      );
-                                    },
-                                  ),
+                                  child: EmailInput(),
                                 ),
                                 SizedBox(height: 12),
                                 SizedBox(
@@ -213,7 +186,6 @@ class _LoginPageState extends State<LoginPage> {
                                     },
                                   ),
                                 ),
-
                                 SizedBox(height: 12),
                                 TextButton(
                                   onPressed: null,
@@ -230,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                               ],
                             ),
-                          ),
+                          ),)
                         ),
                       ),
                     ],
