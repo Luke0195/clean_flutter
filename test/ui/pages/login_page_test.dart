@@ -19,7 +19,7 @@ void main() {
   late StreamController<bool> isLoadingController;
   late StreamController<String?> mainErrorController;
 
-  void initStreams(){
+  void initStreams() {
     mockLoginPresenter = MockLoginPresenter();
     emailErrorController = StreamController<String?>();
     passwordErrorController = StreamController<String?>();
@@ -28,8 +28,8 @@ void main() {
     mainErrorController = StreamController<String?>();
   }
 
-  void mockStreams(){
-        when(
+  void mockStreams() {
+    when(
       mockLoginPresenter.emailErrorStream,
     ).thenAnswer((_) => emailErrorController.stream);
     when(
@@ -46,7 +46,7 @@ void main() {
     ).thenAnswer((_) => mainErrorController.stream);
   }
 
-  closeStreams(){
+  closeStreams() {
     emailErrorController.close();
     passwordErrorController.close();
     isFormValidController.close();

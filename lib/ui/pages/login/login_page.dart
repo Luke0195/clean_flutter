@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tdd/ui/components/heading_line.dart';
 import 'package:flutter_tdd/ui/components/login_header.dart';
+import 'package:flutter_tdd/ui/components/spinner_dialog.dart';
 import 'package:flutter_tdd/ui/pages/login/login_presenter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -12,51 +13,30 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
   @override
-  void initState(){
+  void initState() {
     super.initState();
     widget.loginPresenter.isLoadingStream.listen((isLoading) {
-    if (!mounted) return;
-
-    if (isLoading) {
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 10),
-                  Text('Aguarde...', textAlign: TextAlign.center),
-                ],
-              ),
-            ],
-          );
-        },
-      );
-    } else {
-      if (Navigator.canPop(context)) {
-        Navigator.of(context).pop();
+      if (!mounted) return;
+      if (isLoading) {
+        showLoading(context);
+      } else {
+        hideLoading(context);
       }
-    }
-  });
+    });
 
-  widget.loginPresenter.mainErrorStream.listen((error) {
-    if (!mounted) return;
+    widget.loginPresenter.mainErrorStream.listen((error) {
+      if (!mounted) return;
 
-    if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.red.shade900,
-          content: Text(error, textAlign: TextAlign.center),
-        ),
-      );
-    }
-  });
+      if (error != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red.shade900,
+            content: Text(error, textAlign: TextAlign.center),
+          ),
+        );
+      }
+    });
   }
 
   @override
@@ -64,6 +44,8 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
     widget.loginPresenter.dispose();
   }
+
+  
 
   @override
   Widget build(BuildContext context) {

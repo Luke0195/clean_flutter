@@ -28,7 +28,7 @@ class LoginPresenterViewModel implements LoginPresenter {
   Stream<bool> get isFormValidStream => _isValidFormController.stream;
 
   @override
-  Future<void> auth() async{}
+  Future<void> auth() async {}
 
   @override
   Stream<bool> get isLoadingStream => _isLoadingController.stream;

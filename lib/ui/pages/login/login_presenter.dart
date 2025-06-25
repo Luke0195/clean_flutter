@@ -4,7 +4,7 @@ abstract class LoginPresenter {
   Stream<String?> get mainErrorStream;
   Stream<bool> get isFormValidStream;
   Stream<bool> get isLoadingStream;
-  
+
   Future<void> auth();
   void dispose();
   void validateEmail(String email);
