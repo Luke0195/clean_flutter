@@ -19,14 +19,17 @@ void main() {
   late StreamController<bool> isLoadingController;
   late StreamController<String?> mainErrorController;
 
-  setUp(() {
+  void initStreams(){
     mockLoginPresenter = MockLoginPresenter();
     emailErrorController = StreamController<String?>();
     passwordErrorController = StreamController<String?>();
     isFormValidController = StreamController<bool>();
     isLoadingController = StreamController<bool>();
     mainErrorController = StreamController<String?>();
-    when(
+  }
+
+  void mockStreams(){
+        when(
       mockLoginPresenter.emailErrorStream,
     ).thenAnswer((_) => emailErrorController.stream);
     when(
@@ -41,14 +44,23 @@ void main() {
     when(
       mockLoginPresenter.mainErrorStream,
     ).thenAnswer((_) => mainErrorController.stream);
-  });
+  }
 
-  tearDown(() {
+  closeStreams(){
     emailErrorController.close();
     passwordErrorController.close();
     isFormValidController.close();
     isLoadingController.close();
     mainErrorController.close();
+  }
+
+  setUp(() {
+    initStreams();
+    mockStreams();
+  });
+
+  tearDown(() {
+    closeStreams();
   });
 
   group('Login page', () {
